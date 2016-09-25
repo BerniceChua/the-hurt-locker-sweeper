@@ -1,0 +1,112 @@
+.grey-background-with-inner-shadow {
+  -webkit-box-shadow: inset 10px 10px 141px -11px rgba(0,0,0,1);
+  -moz-box-shadow: inset 10px 10px 141px -11px rgba(0,0,0,1);
+  box-shadow: inset 10px 10px 141px -11px rgba(0,0,0,1);
+}
+
+.medium-margin-bottom {
+  margin-bottom: 2em;
+}
+
+#board {
+  width: 55em;
+  clear: both;
+}
+
+.center {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.column-div {
+  width: 6em;
+  height: auto;
+  float: left;
+}
+
+.row-div {
+  display: block;
+  height: 6em;
+  margin-bottom: 0;
+}
+
+.undiscovered {
+  background: #2E5674;
+  border-left: 3px solid #38678B;
+  border-top: 3px solid #38678B;
+  border-right: 3px solid #24435B;
+  border-bottom: 3px solid #24435B;
+
+}
+
+.undiscovered:active {
+  border-right: 3px solid #38678B;
+  border-bottom: 3px solid #38678B;
+  border-left: 3px solid #24435B;
+  border-top: 3px solid #24435B;
+}
+
+.display-block { display: block; }
+
+.fifty-percent-size {
+  width: 50%;
+  height: auto;
+  border-radius: 100%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+  z-index: 10000;
+}
+
+.overlay-words {
+  font-size: 7em;
+  color: red;
+  opacity: 100;
+  text-align: center;
+  vertical-align: middle;
+  padding: auto;
+  margin: auto;
+}
+
+
+.row-div:hover {
+  border: 1px solid orange;
+}
+
+.token {
+  width: 3em;
+  height: auto;
+  border-radius: 100%;
+  display: block;
+  margin: auto;
+}
+
+.game-over {
+  background: url("../Mine_256x256_32.png");
+  background-size: 78px 78px;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  border-left: 1px solid #38678B;
+  border-top: 1px solid #38678B;
+  border-right: 1px solid #24435B;
+  border-bottom: 1px solid #24435B;
+
+  z-index: 90,001;
+}
+
+.large-green-number {
+  color: green;
+  font-size: 4em;
+}
