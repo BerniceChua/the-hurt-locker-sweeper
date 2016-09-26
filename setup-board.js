@@ -1,16 +1,25 @@
 /* stretch goals: 
   1. add requirejs 
     (so that index.html won't have too many script tags)
-  2. modes = easy, medium, difficult
+  2. find a way to do event delegation for clicking the tiles.
+    // document.getElementById("board").addEventListener("click", function(e) {
+    //   e.preventDefault()
+    //   alert('hello')
+    //   alert( "$(this).attr('id') = " + $(this).attr('id') )
+    //   var test = $(e.target).attr('id')
+    //   if ( $(this).attr('id') === $(e.target).attr('id') ) {
+    //     alert("$(e.target).attr('id') = " + $(e.target).attr('id'));
+    //   }
+    // })
+    instead of "$(this).on('click', function(e){...}"
+  3. modes = easy, medium, difficult
     easy = 9x9 board; 10 mines
     medium = 16x16 board; 40 mines
     difficult = 16x30 board; 99 mines
     currently, only on "easy mode"
-  3. add timer
-  4. add ability to place a flag with right click
+  4. add timer
+  5. add ability to place a flag with right click
 */
-
-
 
 $(document).ready(function(){
   createBoard()
@@ -20,19 +29,7 @@ $(document).ready(function(){
   getAllNotMinesTiles()
 
   $('#reset-button').on('click', function(e) {
-    e.preventDefault()
-    console.log( $(this) )
-    console.log("resetting game")
-    $(".column-div").remove()
-    minePositions = {}
-    clueNumbers = {}
-    listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
-    listOfAllOtherTiles = []
-    createBoard()
-    randomizeMinePositions()
-    putNumbersAroundMines(minePositions)
-    getAllNotMinesTiles()
-    $('.overlay').remove()
+    reloadGame()
   })
 })
 
