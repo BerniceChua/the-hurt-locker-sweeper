@@ -83,7 +83,7 @@ function clickedAMine(column, row, possibility) {
     let rowOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(-1))
     board[columnOfThisTile][rowOfThisTile].setClickedThisSquare = true
     $('#board').find('#' + minePositions[eachKey].columnAndRow).removeClass('undiscovered').addClass('game-over')
-      console.log('put picture of "../Mine_256x256_32.png" on ' + minePositions[eachKey].columnAndRow)
+      console.log('put picture of "../imgs/Mine_256x256_32.png" on ' + minePositions[eachKey].columnAndRow)
   }
 
 
@@ -482,7 +482,7 @@ function putNumber(column, row, possibility) {
   //   let whatIsUnderTheTile = {
   //     mine: function() {
   //       $('#board').find('#' + eachColumnAndRow).removeClass('undiscovered').addClass('game-over')
-  //       console.log('put picture of "../Mine_256x256_32.png" on ' + eachColumnAndRow)
+  //       console.log('put picture of "../imgs/Mine_256x256_32.png" on ' + eachColumnAndRow)
   //     },
   //     0: function() {
   //       console.log('nothing to see here, move along')
