@@ -61,17 +61,20 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000;
+/*
   filter:alpha(opacity=50);
   -moz-opacity:0.5;
   -khtml-opacity: 0.5;
-  opacity: 0.5;
+  opacity: 0.5;*/
+  background-color: rgba(0,0,0,0.5);
   z-index: 10000;
 }
 
+
+
 .overlay-words {
   font-size: 7em;
-  color: red;
+  color: ivory;
   opacity: 100;
   text-align: center;
   vertical-align: middle;
@@ -93,7 +96,7 @@
 }
 
 .game-over {
-  background: url("../Mine_256x256_32.png");
+  background: url("../imgs/Mine_256x256_32.png");
   background-size: 78px 78px;
   background-repeat: no-repeat;
   background-position: center;
@@ -109,4 +112,20 @@
 .large-green-number {
   color: green;
   font-size: 4em;
+}
+
+.translucent-image {
+  background: url("../imgs/game-over-p197175_p_v8_ah.jpg");
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+}
+
+.splash-image {
+  z-index: 90001;
+  float: up;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }

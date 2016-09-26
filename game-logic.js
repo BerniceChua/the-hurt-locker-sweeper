@@ -1,14 +1,39 @@
 let gameIsCompleted = false
+let numberOfRevealedTiles = 0
+// let neededToWin = board.length - Object.keys(minePositions).length
+// let neededToWin = listOfAllOtherTiles.length
+let game_finished = ""
 
 // if (!gameIsCompleted) {
-  function checkWinConditions(argument) {
-    for (let i=0; i< board.length; i++) {
-      for (let j=0; j < board.length; j++) {
-        if ( (board[i][j].getPossibility != 'mine') && (board[i][j].getClickedThisSquare === true) ) {
+  function checkWinConditions() {
+    // for (let i=0; i< listOfAllOtherTiles.length; i++) {
+    if ( numberOfRevealedTiles === listOfAllOtherTiles.length ) {
+      console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
+      console.log("neededToWin = " + listOfAllOtherTiles.length)
+//  or converseley if (numberOfRevealedTiles === listOfAllOtherTiles.length)
+      game_finished = "You revealed the mines!!!!  The Explosive Ordinance Disposal team lives to fight another day";
+      $('<div class="overlay"><img src="./imgs/found-them-all-poster-760.jpg" class="center splash-image" /><div class="overlay-words overlay">' + game_finished + '<button id="reset-button" class="btn btn-primary">Play Again</button></div>').appendTo(document.body);
+      setTimeout(function() {
+        $('.splash-image').fadeOut('slow');
+      }, 5000);
+      $('body').on("click", 'button', function(e) {
+      // $('#reset-button').on('click', function(e) {
+        e.preventDefault()
+        console.log( $(this) )
+        console.log("resetting game")
+        $(".column-div").remove()
+        minePositions = {}
+        clueNumbers = {}
+        listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
+        listOfAllOtherTiles = []
+        createBoard()
+        randomizeMinePositions()
+        putNumbersAroundMines(minePositions)
+        $('.overlay').remove()
+      })
 
-        }
-      }
     }
+    // }
   }
 // }
 // document.getElementById("board").addEventListener("click", function(e) {
@@ -59,8 +84,10 @@ $(this).on('click', function(e){
       clickedAMine(getColumn, getRow, possibilities)
     } else if (possibilities > 0) {
       clickedANumber(getColumn, getRow, possibilities)
+      checkWinConditions()
     } else {
       clickedAnEmptyCell(getColumn, getRow, possibilities)
+      checkWinConditions()
     }
   }
 })
@@ -83,12 +110,38 @@ function clickedAMine(column, row, possibility) {
     let rowOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(-1))
     board[columnOfThisTile][rowOfThisTile].setClickedThisSquare = true
     $('#board').find('#' + minePositions[eachKey].columnAndRow).removeClass('undiscovered').addClass('game-over')
-      console.log('put picture of "../Mine_256x256_32.png" on ' + minePositions[eachKey].columnAndRow)
+      console.log('put picture of "../imgs/Mine_256x256_32.png" on ' + minePositions[eachKey].columnAndRow)
   }
 
 
   // replace this alert with overlay.
-  alert("you hit a mine at column " + column + ", row " + row + "; GAME OVER")
+  // alert("you hit a mine at column " + column + ", row " + row + "; GAME OVER")
+  game_finished = "Oh noes!!! You hit a mine at column " + column + ", row " + row + "; GAME OVER!!";
+  $('<div class="overlay"><img src="./imgs/game-over-p197175_p_v8_ah.jpg" class="center splash-image" /><div class="overlay-words overlay">' + game_finished + '<button id="reset-button" class="btn btn-primary">Reset Game</button></div>').appendTo(document.body);
+  setTimeout(function() {
+    $('.splash-image').fadeOut('slow');
+  }, 5000);
+  $('body').on("click", 'button', function(e) {
+  // $('#reset-button').on('click', function(e) {
+    e.preventDefault()
+    console.log( $(this) )
+    console.log("resetting game")
+    $(".column-div").remove()
+    minePositions = {}
+    clueNumbers = {}
+    listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
+    listOfAllOtherTiles = []
+    createBoard()
+    randomizeMinePositions()
+    putNumbersAroundMines(minePositions)
+    $('.overlay').remove()
+  })
+
+  // $('<div class="overlay-words overlay">' + game_finished + '<button id="reset-button" class="btn btn-primary">Reset Game</button><img src="./imgs/game-over-p197175_p_v8_ah.jpg" class="translucent-image"/></div>').appendTo(document.body);
+  // setTimeout(function() {
+  //   $('.overlay-words.overlay').fadeOut('slow');
+  // }, 2000);
+
 }
 
 function clickedANumber(column, row, possibilities) {
@@ -453,6 +506,8 @@ function revealEmptyTiles(columnAndRowArray) {
 
       console.log('nothing to see here, move along')
       $('#board').find('#c' + column + 'r' + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow')
+      numberOfRevealedTiles++
+      console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
   //   }
     
   //   expandSpiral++
@@ -466,6 +521,9 @@ function putNumber(column, row, possibility) {
   console.log($('#board').find('#c' + column + "r" + row))
   board[column][row].setClickedThisSquare = true
   $('#board').find('#c' + column + "r" + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow').append("<p class='text-center large-green-number'>" + possibility + "</p>")
+
+  numberOfRevealedTiles++
+  console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
 }
 
   // function revealAdjacentEmpties(listOfEmpties) {
@@ -482,7 +540,7 @@ function putNumber(column, row, possibility) {
   //   let whatIsUnderTheTile = {
   //     mine: function() {
   //       $('#board').find('#' + eachColumnAndRow).removeClass('undiscovered').addClass('game-over')
-  //       console.log('put picture of "../Mine_256x256_32.png" on ' + eachColumnAndRow)
+  //       console.log('put picture of "../imgs/Mine_256x256_32.png" on ' + eachColumnAndRow)
   //     },
   //     0: function() {
   //       console.log('nothing to see here, move along')

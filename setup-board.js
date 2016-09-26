@@ -16,6 +16,8 @@ $(document).ready(function(){
     createBoard()
     randomizeMinePositions()
     putNumbersAroundMines(minePositions)
+    getAllNotMinesTiles()
+    $('.overlay').remove()
   })
 })
 
@@ -277,7 +279,7 @@ function surroundMinesWithClueNumbers(columnAndRowArray) {
 
 let listOfAllOtherTiles = []
 
-function getAllNotMinesTiles(listOfClueNumbers) {
+function getAllNotMinesTiles() {
   let column = 0
   let row = 0
   for (let i=0; i < board.length; i++) {
@@ -288,7 +290,6 @@ function getAllNotMinesTiles(listOfClueNumbers) {
     }
   }
 }
-
 
 
 function senseRightClick() {
