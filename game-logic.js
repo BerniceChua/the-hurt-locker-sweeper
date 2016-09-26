@@ -5,44 +5,28 @@ function checkWinConditions() {
   if ( numberOfRevealedTiles === listOfAllOtherTiles.length ) {
     console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
     console.log("neededToWin = " + listOfAllOtherTiles.length)
-    game_finished = "You revealed the mines!!!!  The Explosive Ordinance Disposal team lives to fight another day";
-    $('<div class="overlay"><img src="./imgs/found-them-all-poster-760.jpg" class="center splash-image" /><div class="overlay-words overlay">' + game_finished + '<button id="reset-button" class="btn btn-primary">Play Again</button></div>').appendTo(document.body);
+
+    gameCompletedMsg = "You revealed the mines!!!!  The Explosive Ordinance Disposal team lives to fight another day.";
+    gameCompletedImg = "./imgs/found-them-all-poster-760.jpg"
+    playAgain = "Play Again"
+    putOverlay(gameCompletedImg, gameCompletedMsg, playAgain)
     setTimeout(function() {
       $('.splash-image').fadeOut('slow');
     }, 5000);
-    $('body').on("click", 'button', function(e) {
-      reloadGame()
-    })
 
+    reloadGame()
   }
 }
-// }
-// document.getElementById("board").addEventListener("click", function(e) {
-//   e.preventDefault()
-//   alert('hello')
-//   alert( "$(this).attr('id') = " + $(this).attr('id') )
-//   var test = $(e.target).attr('id')
-//   if ( $(this).attr('id') === $(e.target).attr('id') ) {
-//     alert("$(e.target).attr('id') = " + $(e.target).attr('id'));
-//   }
-// })
 
 $(this).on('click', function(e){
-  console.log(this)
   e.preventDefault()
 
   let $clickedTile = $(e.target).attr('id')
-  console.log($clickedTile)
-
   let getColumn = parseInt($clickedTile.slice(1,2))
   let getRow = parseInt($clickedTile.slice(-1))
-  console.log(getColumn)
-  console.log(getRow)
-  console.log(board[getColumn][getRow].getClickedThisSquare)
 
   if (board[getColumn][getRow].getClickedThisSquare === false) {
     board[getColumn][getRow].setClickedThisSquare = true
-    console.log(board[getColumn][getRow].getClickedThisSquare)
 
     let possibilities = board[getColumn][getRow].getPossibility
     // tried using switch statement, 
@@ -63,35 +47,32 @@ $(this).on('click', function(e){
 
 function clickedAMine(column, row, possibility) {
   /*
-    1. get all cells that contain mines (from "minePositions" hash) and change appearance of cells
-    2. put overlay to block users from playing more, and 
+    1. get all cells that contain mines (from "minePositions" hash)
+    2. change appearance of cells
+    3. put overlay to block users from clicking on the game
   */
-  console.log("column = " + column)
-  console.log("row = " + row)
-
   for (let eachKey in minePositions) {
-    console.log(minePositions[eachKey])
-    console.log(board[column][row].getPossibility)
-    console.log(minePositions[eachKey].columnAndRow)
-    // changeTileAppearance(possibility, column, row, minePositions[eachKey].columnAndRow)
     let columnOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(1,2))
     let rowOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(-1))
+
     board[columnOfThisTile][rowOfThisTile].setClickedThisSquare = true
     $('#board').find('#' + minePositions[eachKey].columnAndRow).removeClass('undiscovered').addClass('game-over')
-      console.log('put picture of "../imgs/Mine_256x256_32.png" on ' + minePositions[eachKey].columnAndRow)
   }
 
-  game_finished = "Oh noes!!! You hit a mine at column " + column + ", row " + row + "; GAME OVER!!";
-  $('<div class="overlay"><img src="./imgs/game-over-p197175_p_v8_ah.jpg" class="center splash-image" /><div class="overlay-words overlay">' + game_finished + '<button id="reset-button" class="btn btn-primary">Reset Game</button></div>').appendTo(document.body);
+  gameOverMsg = "Oh noes!!! You hit a mine at column " + column + ", row " + row + "; GAME OVER!!";
+  gameOverImg = "./imgs/game-over-p197175_p_v8_ah.jpg"
+  resetGame = "Reset Game"
+  putOverlay(gameOverImg, gameOverMsg, resetGame)
   setTimeout(function() {
     $('.splash-image').fadeOut('slow');
   }, 5000);
-  $('body').on("click", 'button', function(e) {
-    reloadGame()
-  })
 
+  reloadGame()
 }
 
+function putOverlay(imagePath, message, buttonText) {
+  $("<div class='overlay'><img src=" + imagePath + " class='center splash-image' /><div class='overlay-words overlay'>" + message + "<button id='reset-button' class='btn btn-primary'>" + buttonText + "</button></div>").appendTo(document.body)
+}
 
 function clickedANumber(column, row, possibilities) {
   /*
@@ -116,12 +97,11 @@ function clickedAnEmptyCell(column, row, possibilities) {
   console.log("column = " + column)
   console.log('row = ' + row)
   console.log('possibilities = ' + possibilities)
-  // if ( (possibilities != 'mines') && (possibilities != 0) && (possibilities < board.length) ) {
-  //   putNumber(possibilities, column, row)
-  // }
-
   console.log('nothing to see here, move along')
+
   $('#board').find('#c' + column + 'r' + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow')
+  numberOfRevealedTiles++
+  console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
 
   let north = checkTileAbove(column, row)
   let northEast = checkNorthEastTile(column, row)
@@ -137,13 +117,6 @@ function clickedAnEmptyCell(column, row, possibilities) {
   let listOfEmpties = []
 
   for (let i=0; i < adjacentTiles.length; i++) {
-    // if ( Array.isArray(adjacentTiles[i]) ) {
-    // if (insideBoard(adjacentTiles[i][0], adjacentTiles[i][1])) {
-      /*
-        I tried using that if statement in line 138,
-        but that gives the error: 
-        "game-logic.js:138 Uncaught TypeError: Cannot read property '0' of undefined"
-      */
     if ( Array.isArray(adjacentTiles[i]) ) {
       let targetColumn = adjacentTiles[i][0]
       let targetRow = adjacentTiles[i][1]
@@ -246,28 +219,16 @@ function revealEmptyTiles(columnAndRowArray) {
   console.log('possibilities:')
   console.log("before = " + board[column][row].getPossibility)
   console.log("typeof = " + (typeof board[column][row].getPossibility))
+  console.log("after = " + board[column][row].getPossibility)
 
-  // $('#board').find('#c' + column + 'r' + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow')
-  // console.log("after = " + board[column][row].getPossibility)
-  // let expandSpiral = 0
-  // do {
-  //   let expandNE = [1 * (expandSpiral), 1 * (expandSpiral)]
-  //   let expandSE = [1 * (expandSpiral), -1 * (expandSpiral)]
-  //   let expandSW = [-1 * (expandSpiral), -1 * (expandSpiral)]
-  //   let expandNW = [-1 * (expandSpiral), 1 * (expandSpiral)]
-  //   let expand = [expandNE, expandSE, expandSW, expandNW]
+  console.log("column = " + column)
+  console.log('row = ' + row)
+  board[column][row].setClickedThisSquare = true
+  $('#board').find('#c' + column + 'r' + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow')
+  console.log('nothing to see here, move along')
 
-  //   for (let i=0; i < expand.length; i++) {
-      console.log("column")
-      console.log(column)
-      console.log('row')
-      console.log(row)
-      board[column][row].setClickedThisSquare = true
-
-      console.log('nothing to see here, move along')
-      $('#board').find('#c' + column + 'r' + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow')
-      numberOfRevealedTiles++
-      console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
+  numberOfRevealedTiles++
+  console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
 }
 
 function putNumber(column, row, possibility) {
