@@ -1,3 +1,19 @@
+function reloadGame() {
+  e.preventDefault()
+  console.log( $(this) )
+  console.log("resetting game")
+  $(".column-div").remove()
+  minePositions = {}
+  clueNumbers = {}
+  listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
+  listOfAllOtherTiles = []
+  createBoard()
+  randomizeMinePositions()
+  putNumbersAroundMines(minePositions)
+  getAllNotMinesTiles()
+  $('.overlay').remove()
+}
+
 /*
   Check if coordinates are inside or outside the allowed area.
   

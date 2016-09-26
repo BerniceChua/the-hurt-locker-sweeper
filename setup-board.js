@@ -1,3 +1,17 @@
+/* stretch goals: 
+  1. add requirejs 
+    (so that index.html won't have too many script tags)
+  2. modes = easy, medium, difficult
+    easy = 9x9 board; 10 mines
+    medium = 16x16 board; 40 mines
+    difficult = 16x30 board; 99 mines
+    currently, only on "easy mode"
+  3. add timer
+  4. add ability to place a flag with right click
+*/
+
+
+
 $(document).ready(function(){
   createBoard()
   // senseRightClick()
@@ -7,6 +21,7 @@ $(document).ready(function(){
 
   $('#reset-button').on('click', function(e) {
     e.preventDefault()
+    console.log( $(this) )
     console.log("resetting game")
     $(".column-div").remove()
     minePositions = {}
@@ -64,16 +79,9 @@ class Square {
 */
 let board = [[],[],[],[],[],[],[],[],[]]
 
-// stretch goals: modes = easy, medium, difficult
-// easy = 9x9; 10 mines
-// medium = 16x16; 40 mines
-// difficult = 16x30; 99 mines
-// currently, only on "easy mode"
-
 function createBoard() {
   for (let i=0; i < board.length; i++) {
     let thisColumn = 'c' + i;
-    // console.log("i = " + i)
 
     $("#board").append("<div class='column-div' id=" + thisColumn + "></div>")
 
@@ -81,7 +89,7 @@ function createBoard() {
       let divID = thisColumn + "r" + (j-1)
 
       $('#' + thisColumn).append("<div class='row-div undiscovered' id=" + divID + "></div>")
-      // console.log("j-1 = " + (j-1))
+
       board[i][j-1] = new Square(divID)
     }
   }
@@ -93,13 +101,6 @@ function createBoard() {
 let minePositions = {}
 
 function randomizeMinePositions() {
-  // for (let i=0; i<10; i++) {
-  //   let randomColumnNumber = Math.ceil(Math.random() * (8 - 0) + 0)
-  //   let randomRowNumber = Math.ceil(Math.random() * (9 - 1) + 1)
-  //   console.log("c" + randomColumnNumber + "r" + randomRowNumber)
-  // }
-
-  // let numberOfKeysShouldBe10 = 0
   console.log(Object.keys(minePositions).length)
   while (Object.keys(minePositions).length < 10) {
     let randomColumnNumber = Math.floor(Math.random() * (board.length-1) )
@@ -111,10 +112,9 @@ function randomizeMinePositions() {
     console.log("divID = " + divID)
     console.log(minePositions.hasOwnProperty(divID))
     console.log(Object.keys(minePositions).length)
-    // if (divID in minePositions) { // this line ensures that ALL of the random columns or rows would NOT repeat
-    if (minePositions.hasOwnProperty(divID)) {
-      console.log(minePositions[divID])
-    } else {
+
+    if ( !minePositions.hasOwnProperty(divID) ) {
+      // this line ensures that ALL of the random columns or rows would NOT repeat
       minePositions[divID] = {columnAndRow: divID}
       console.log(minePositions)
       console.log("Object.keys(minePositions).length = " + Object.keys(minePositions).length)
@@ -133,6 +133,7 @@ let listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
 
 function putNumbersAroundMines(hashOfMinePositions) {
   /*
+  !!!!!!!!!!!!!!PSEUDOCODE!!!!!!!!!!!!!!
     1. loop through each key in the hash to find mine positions
     2. get the array location of tiles around mine positions
       2.1. parse 'columnAndRow'
@@ -197,54 +198,6 @@ function putNumbersAroundMines(hashOfMinePositions) {
         }
       }
     }
-
-    // if ( Array.isArray(north) ) {
-    //   if (board[north[0]][north[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(north)
-    //   }
-    // }
-
-    // if (Array.isArray(northEast) ) {
-    //   if (board[northEast[0]][northEast[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(northEast)
-    //   }
-    // }
-
-    // if ( Array.isArray(east) ) {
-    //   if (board[east[0]][east[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(east)
-    //   }
-    // }
-    
-    // if ( Array.isArray(southEast) ) {
-    //   if (board[southEast[0]][southEast[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(southEast)
-    //   }
-    // }
-
-    // if ( Array.isArray(south) ) {
-    //   if (board[south[0]][sout[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(south)
-    //   }
-    // }
-    
-    // if ( Array.isArray(southWest) ) {
-    //   if (board[southWest[0]][southWest[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(southWest)
-    //   }
-    // }
-
-    // if ( Array.isArray(west) ) {
-    //   if (board[west[0]][west[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(west)
-    //   }
-    // }
-    
-    // if ( Array.isArray(northWest) ) {
-    //   if (board[northWest[0]][northWest[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(northWest)
-    //   }
-    // }
     
   }
 }
