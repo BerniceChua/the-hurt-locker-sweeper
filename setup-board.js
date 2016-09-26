@@ -98,30 +98,19 @@ function createBoard() {
 let minePositions = {}
 
 function randomizeMinePositions() {
-  console.log(Object.keys(minePositions).length)
   while (Object.keys(minePositions).length < 10) {
     let randomColumnNumber = Math.floor(Math.random() * (board.length-1) )
     let randomRowNumber = Math.floor(Math.random() * (board.length-1) )
     let divID = "c" + randomColumnNumber + "r" + randomRowNumber
-    console.log("randomColumnNumber = " + randomColumnNumber)
-    console.log("randomRowNumber = " + randomRowNumber)
-    console.log(Object.keys(minePositions))
-    console.log("divID = " + divID)
-    console.log(minePositions.hasOwnProperty(divID))
-    console.log(Object.keys(minePositions).length)
 
     if ( !minePositions.hasOwnProperty(divID) ) {
-      // this line ensures that ALL of the random columns or rows would NOT repeat
+      // this if statement ensures that ALL of the random columns or rows would NOT repeat
       minePositions[divID] = {columnAndRow: divID}
-      console.log(minePositions)
-      console.log("Object.keys(minePositions).length = " + Object.keys(minePositions).length)
 
       board[randomColumnNumber][randomRowNumber].setPossibility = 'mine'
-      console.log(board[randomColumnNumber][randomRowNumber].getPossibility)
     }
   }
 
-  console.log(minePositions)
   return minePositions
 }
 
@@ -163,15 +152,12 @@ function putNumbersAroundMines(hashOfMinePositions) {
           2.5.c.2. if possibility is 'mine', do nothing.
           2.5.c.3. if possibility is 'clear' or 'number', get the divID and put a number (+1) in "possibility" property
   */
-  console.log('in putNumbersAroundMines(hashOfMinePositions)')
+
   for (let eachKey in minePositions) {
     let columnOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(1,2))
     let rowOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(-1))
     let mineStopValue = board[columnOfThisTile][rowOfThisTile].getPossibility
-    console.log("column = " + columnOfThisTile)
-    console.log("row = " + rowOfThisTile)
-    console.log(minePositions[eachKey].columnAndRow)
-    console.log(board[columnOfThisTile][rowOfThisTile].getPossibility)
+
 
     let north = checkTileAbove(columnOfThisTile, rowOfThisTile)
     let northEast = checkNorthEastTile(columnOfThisTile, rowOfThisTile)
@@ -185,12 +171,9 @@ function putNumbersAroundMines(hashOfMinePositions) {
     let adjacentTiles = [north, northEast, east, southEast, south, southWest, west, northWest]
 
     for (let i=0; i < adjacentTiles.length; i++) {
-      console.log("i = " + i)
       if ( Array.isArray(adjacentTiles[i]) ) {
-        console.log('Array.isArray(adjacentTiles[' + i + '] is: ' + Array.isArray(adjacentTiles[i]) )
         if (board[adjacentTiles[i][0]][adjacentTiles[i][1]].getPossibility != 'mine') {
-          console.log('inside 2nd if')
-          console.log('board[adjacentTiles[i][0]][adjacentTiles[i][1]].getPossibility = ' + board[adjacentTiles[i][0]][adjacentTiles[i][1]].getPossibility)
+
           surroundMinesWithClueNumbers(adjacentTiles[i])
         }
       }
@@ -203,27 +186,19 @@ function surroundMinesWithClueNumbers(columnAndRowArray) {
   let column = columnAndRowArray[0]
   let row = columnAndRowArray[1]
   let divID = "c" + columnAndRowArray[0] + "r" + columnAndRowArray[1]
-
-  console.log("before = " + board[column][row].getPossibility)
-  console.log("typeof = " + (typeof board[column][row].getPossibility))
   let tileValue = board[column][row].getPossibility
   
-  console.log("after = " + board[column][row].getPossibility)
-
-  if (clueNumbers.hasOwnProperty(divID)) {
-    console.log(clueNumbers)
-  } else {
+  if ( !clueNumbers.hasOwnProperty(divID)) {
+    // this if statement ensures that ALL of the columns or rows would NOT repeat
     clueNumbers[divID] = {
       c: column,
       r: row,
     }
-    console.log(clueNumbers)
 
     listOfClueNumbers[column][row] = 'clue number'
-    console.log("Object.keys(listOfClueNumbers).length = " + Object.keys(listOfClueNumbers).length)
   }
+
   board[column][row].setPossibility = tileValue + 1
-  console.log(board[column][row].getPossibility)
 }
 
 
