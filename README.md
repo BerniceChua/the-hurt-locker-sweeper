@@ -9,7 +9,7 @@ Minesweeper clone, named after the film "<i>The Hurt Locker</i>" ([https://en.wi
 
 (The name and the images are just for fun, because they deal with mines/bombs in that film.  So this is a parody.  All copyright belongs to their creators.)
 
-Unlike the original Minesweeper, which had "[Board Cycles](http://www.minesweeper.info/wiki/Board_Cycles)", this version is actually random.  Even I don't know beforehand where the mines would be!
+Unlike the original Minesweeper, which had "[Board Cycles](http://www.minesweeper.info/wiki/Board_Cycles)", this version is actually random.  Even *I* don't know beforehand where the mines would be!  
 
 ### Technologies Used
 - JavaScript

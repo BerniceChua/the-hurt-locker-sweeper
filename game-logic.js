@@ -3,7 +3,7 @@ let numberOfRevealedTiles = 0
 function checkWinConditions() {
   if ( numberOfRevealedTiles === listOfAllOtherTiles.length ) {
     gameCompletedMsg = "You revealed all the mines!!!!  The Explosive Ordinance Disposal team lives to fight another day.";
-    gameCompletedImg = "./imgs/found-them-all-poster-760.jpg"
+    gameCompletedImg = "./images/found-them-all-poster-760.jpg"
     playAgain = "Play Again"
     putOverlay(gameCompletedImg, gameCompletedMsg, playAgain)
     setTimeout(function() {
@@ -56,7 +56,7 @@ function clickedAMine(column, row, possibility) {
   }
 
   gameOverMsg = "Oh noes!!! You hit a mine at column " + column + ", row " + row + "; GAME OVER!!";
-  gameOverImg = "./imgs/game-over-p197175_p_v8_ah.jpg"
+  gameOverImg = "./images/game-over-p197175_p_v8_ah.jpg"
   resetGame = "Reset Game"
   putOverlay(gameOverImg, gameOverMsg, resetGame)
   setTimeout(function() {

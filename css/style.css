@@ -79,7 +79,7 @@
 }
 
 .game-over {
-  background: url("../imgs/Mine_256x256_32.png");
+  background: url("../images/Mine_256x256_32.png");
   background-size: 78px 78px;
   background-repeat: no-repeat;
   background-position: center;

@@ -197,7 +197,6 @@ function surroundMinesWithClueNumbers(columnAndRowArray) {
       c: column,
       r: row,
     }
-
     listOfClueNumbers[column][row] = 'clue number'
   }
 
