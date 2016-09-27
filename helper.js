@@ -7,6 +7,7 @@ function reloadGame() {
     clueNumbers = {}
     listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
     listOfAllOtherTiles = []
+    numberOfRevealedTiles = 0
     createBoard()
     randomizeMinePositions()
     putNumbersAroundMines(minePositions)
