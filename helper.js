@@ -1,8 +1,7 @@
 function reloadGame() {
   $('body').on("click", 'button', function(e) {
     e.preventDefault()
-    console.log( $(this) )
-    console.log("resetting game")
+
     $(".column-div").remove()
     minePositions = {}
     clueNumbers = {}
