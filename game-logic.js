@@ -31,7 +31,7 @@ $(this).on('click', function(e){
     if (possibilities === 'mine') {
       clickedAMine(getColumn, getRow, possibilities)
     } else if (possibilities > 0) {
-      clickedANumber(getColumn, getRow, possibilities)
+      putNumber(getColumn, getRow, possibilities)
       checkWinConditions()
     } else {
       clickedAnEmptyCell(getColumn, getRow, possibilities)
@@ -68,14 +68,6 @@ function clickedAMine(column, row, possibility) {
 
 function putOverlay(imagePath, message, buttonText) {
   $("<div class='overlay'><img src=" + imagePath + " class='center splash-image' /><div class='overlay-words overlay'>" + message + "<button id='reset-button' class='btn btn-primary'>" + buttonText + "</button></div>").appendTo(document.body)
-}
-
-function clickedANumber(column, row, possibilities) {
-  /*
-    1. change appearance of cell
-    2. put the clue number
-  */
-  putNumber(column, row, possibilities)
 }
 
 function clickedAnEmptyCell(column, row, possibilities) {
@@ -185,6 +177,10 @@ function revealEmptyTiles(columnAndRowArray) {
 }
 
 function putNumber(column, row, possibility) {
+  /*
+    1. change appearance of cell
+    2. put the clue number
+  */
   board[column][row].setClickedThisSquare = true
   $('#board').find('#c' + column + "r" + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow').append("<p class='text-center large-green-number'>" + possibility + "</p>")
 
