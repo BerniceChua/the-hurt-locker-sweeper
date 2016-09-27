@@ -75,10 +75,6 @@ function clickedANumber(column, row, possibilities) {
     1. change appearance of cell
     2. put the clue number
   */
-  console.log('inside clickedANumber()')
-  console.log("you hit a number at c" + column + "r" + row)
-  console.log(possibilities)
-  // putNumber(column, row, board[column][row].getPossibility.clue)
   putNumber(column, row, possibilities)
 }
 
@@ -89,15 +85,9 @@ function clickedAnEmptyCell(column, row, possibilities) {
       2.1. if empty, call this function again
       2.2. if has a number, call clickedANumber()
   */
-  console.log("you hit an empty cell at c" + column + "r" + row)
-  console.log("column = " + column)
-  console.log('row = ' + row)
-  console.log('possibilities = ' + possibilities)
-  console.log('nothing to see here, move along')
 
   $('#board').find('#c' + column + 'r' + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow')
   numberOfRevealedTiles++
-  console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
 
   let north = checkTileAbove(column, row)
   let northEast = checkNorthEastTile(column, row)
@@ -116,30 +106,16 @@ function clickedAnEmptyCell(column, row, possibilities) {
     if ( Array.isArray(adjacentTiles[i]) ) {
       let targetColumn = adjacentTiles[i][0]
       let targetRow = adjacentTiles[i][1]
-      console.log("targetColumn = " + targetColumn)
-      console.log("targetRow = " + targetRow)
-      console.log("what's inside? " + board[targetColumn][targetRow].getPossibility)
 
       if ( (board[targetColumn][targetRow].getPossibility > 0) ) {
-        console.log("checked if possibility is a number bigger than zero")
         if (board[targetColumn][targetRow].getClickedThisSquare === false) {
-          console.log("checked if this tile had already been revealed")
-          console.log("column (targetColumn) = " + targetColumn)
-          console.log("row (targetRow) = " + targetRow)
-          console.log(board[targetColumn][targetRow].getPossibility)
-          console.log('the target tile is a number')
           putNumber(targetColumn, targetRow, board[targetColumn][targetRow].getPossibility)
         }
       } else {
         if (board[targetColumn][targetRow].getClickedThisSquare === false) {
-          console.log("column (targetColumn) = " + targetColumn)
-          console.log("row (targetRow) = " + targetRow)
-          console.log(board[targetColumn][targetRow].getPossibility)
-          console.log('the target tile is empty')
           revealEmptyTiles(adjacentTiles[i])
 
           listOfEmpties.push(board[targetColumn][targetRow])
-          console.log(listOfEmpties)
         }
       } 
     }
@@ -169,16 +145,10 @@ function clickedAnEmptyCell(column, row, possibilities) {
 
         if ( (board[targetColumn][targetRow].getPossibility > 0) ) {
           if (board[targetColumn][targetRow].getClickedThisSquare === false) {
-            console.log("column (targetColumn) = " + targetColumn)
-            console.log("row (targetRow) = " + targetRow)
-            console.log(board[targetColumn][targetRow].getPossibility)
             putNumber(targetColumn, targetRow, board[targetColumn][targetRow].getPossibility)
           }
         } else {
           if (board[targetColumn][targetRow].getClickedThisSquare === false) {
-            console.log("column (targetColumn) = " + targetColumn)
-            console.log("row (targetRow) = " + targetRow)
-            console.log(board[targetColumn][targetRow].getPossibility)
             revealEmptyTiles(adjacentTiles[i])
 
             listOfEmpties.push(board[targetColumn][targetRow])
@@ -194,9 +164,6 @@ function clickedAnEmptyCell(column, row, possibilities) {
 
         if ( (board[targetColumn][targetRow].getPossibility > 0) ) {
           if (board[targetColumn][targetRow].getClickedThisSquare === false) {
-            console.log("column (targetColumn) = " + targetColumn)
-            console.log("row (targetRow) = " + targetRow)
-            console.log(board[targetColumn][targetRow].getPossibility)
             putNumber(targetColumn, targetRow, board[targetColumn][targetRow].getPossibility)
           }
         }
@@ -210,30 +177,16 @@ function revealEmptyTiles(columnAndRowArray) {
   let column = columnAndRowArray[0]
   let row = columnAndRowArray[1]
   let tileValue = board[column][row].getPossibility
-  console.log("tileValue = " + tileValue)
-  console.log("you hit revealed the cell at c" + column + "r" + row)
-  console.log('possibilities:')
-  console.log("before = " + board[column][row].getPossibility)
-  console.log("typeof = " + (typeof board[column][row].getPossibility))
-  console.log("after = " + board[column][row].getPossibility)
 
-  console.log("column = " + column)
-  console.log('row = ' + row)
   board[column][row].setClickedThisSquare = true
   $('#board').find('#c' + column + 'r' + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow')
-  console.log('nothing to see here, move along')
 
   numberOfRevealedTiles++
-  console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
 }
 
 function putNumber(column, row, possibility) {
-  console.log(possibility)
-  console.log('change appearance of tile AND reveal the clue number here at c' + column + "r" + row)
-  console.log($('#board').find('#c' + column + "r" + row))
   board[column][row].setClickedThisSquare = true
   $('#board').find('#c' + column + "r" + row).removeClass('undiscovered').addClass('grey-background-with-inner-shadow').append("<p class='text-center large-green-number'>" + possibility + "</p>")
 
   numberOfRevealedTiles++
-  console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
 }
