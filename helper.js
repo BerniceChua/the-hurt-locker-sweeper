@@ -16,7 +16,6 @@ function reloadGame() {
   })
 }
 
-
 /*
   Check if coordinates are inside or outside the allowed area.
   
@@ -26,7 +25,6 @@ function reloadGame() {
   then it returns an array with [column, row].
   If not, it returns 'undefined'.
 */
-
 function checkTileAbove(column, row) {
   let tileAbove = row + 1
   if (tileAbove < board.length) {
