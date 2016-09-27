@@ -1,12 +1,8 @@
 let numberOfRevealedTiles = 0
-let game_finished = ""
 
 function checkWinConditions() {
   if ( numberOfRevealedTiles === listOfAllOtherTiles.length ) {
-    console.log("numberOfRevealedTiles = " + numberOfRevealedTiles)
-    console.log("neededToWin = " + listOfAllOtherTiles.length)
-
-    gameCompletedMsg = "You revealed the mines!!!!  The Explosive Ordinance Disposal team lives to fight another day.";
+    gameCompletedMsg = "You revealed all the mines!!!!  The Explosive Ordinance Disposal team lives to fight another day.";
     gameCompletedImg = "./imgs/found-them-all-poster-760.jpg"
     playAgain = "Play Again"
     putOverlay(gameCompletedImg, gameCompletedMsg, playAgain)
