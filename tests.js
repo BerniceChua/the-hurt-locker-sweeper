@@ -255,3 +255,9 @@ QUnit.test( "randomizeMinePositions() tests", function( assert ) {
   //   );
 
 });
+
+QUnit.test( "click 'reset game' or 'play again' buttons tests", function( assert ) {
+  assert.equal(
+    numberOfRevealedTiles, 0,
+    "when player clicks 'reset game' or 'play again', 'reloadGame()' should make the numberOfRevealedTiles should be zero.")
+});

@@ -1,7 +1,6 @@
 // require ('./setup-board.js')
 // require ('./game-logic.js')
 
-
 requirejs.config({
     "baseUrl": "./",
     "paths": {
