@@ -1,3 +1,29 @@
+/* stretch goals: 
+  1. add requirejs 
+    (so that index.html won't have too many script tags)
+  2. find a way to do event delegation for clicking the tiles.
+    // document.getElementById("board").addEventListener("click", function(e) {
+    //   e.preventDefault()
+    //   alert('hello')
+    //   alert( "$(this).attr('id') = " + $(this).attr('id') )
+    //   var test = $(e.target).attr('id')
+    //   if ( $(this).attr('id') === $(e.target).attr('id') ) {
+    //     alert("$(e.target).attr('id') = " + $(e.target).attr('id'));
+    //   }
+    // })
+    instead of "$(this).on('click', function(e){...}", also this will
+    get rid of this error msg: 
+    "game-logic.js:25 Uncaught TypeError: Cannot read property 'NaN' of undefined"
+    which happens when anything aside from the tiles are clicked.
+  3. modes = easy, medium, difficult
+    easy = 9x9 board; 10 mines
+    medium = 16x16 board; 40 mines
+    difficult = 16x30 board; 99 mines
+    currently, only on "easy mode"
+  4. add timer
+  5. add ability to place a flag with right click
+*/
+
 $(document).ready(function(){
   createBoard()
   // senseRightClick()
@@ -6,18 +32,7 @@ $(document).ready(function(){
   getAllNotMinesTiles()
 
   $('#reset-button').on('click', function(e) {
-    e.preventDefault()
-    console.log("resetting game")
-    $(".column-div").remove()
-    minePositions = {}
-    clueNumbers = {}
-    listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
-    listOfAllOtherTiles = []
-    createBoard()
-    randomizeMinePositions()
-    putNumbersAroundMines(minePositions)
-    getAllNotMinesTiles()
-    $('.overlay').remove()
+    reloadGame()
   })
 })
 
@@ -64,16 +79,9 @@ class Square {
 */
 let board = [[],[],[],[],[],[],[],[],[]]
 
-// stretch goals: modes = easy, medium, difficult
-// easy = 9x9; 10 mines
-// medium = 16x16; 40 mines
-// difficult = 16x30; 99 mines
-// currently, only on "easy mode"
-
 function createBoard() {
   for (let i=0; i < board.length; i++) {
     let thisColumn = 'c' + i;
-    // console.log("i = " + i)
 
     $("#board").append("<div class='column-div' id=" + thisColumn + "></div>")
 
@@ -81,7 +89,7 @@ function createBoard() {
       let divID = thisColumn + "r" + (j-1)
 
       $('#' + thisColumn).append("<div class='row-div undiscovered' id=" + divID + "></div>")
-      // console.log("j-1 = " + (j-1))
+
       board[i][j-1] = new Square(divID)
     }
   }
@@ -93,38 +101,19 @@ function createBoard() {
 let minePositions = {}
 
 function randomizeMinePositions() {
-  // for (let i=0; i<10; i++) {
-  //   let randomColumnNumber = Math.ceil(Math.random() * (8 - 0) + 0)
-  //   let randomRowNumber = Math.ceil(Math.random() * (9 - 1) + 1)
-  //   console.log("c" + randomColumnNumber + "r" + randomRowNumber)
-  // }
-
-  // let numberOfKeysShouldBe10 = 0
-  console.log(Object.keys(minePositions).length)
   while (Object.keys(minePositions).length < 10) {
     let randomColumnNumber = Math.floor(Math.random() * (board.length-1) )
     let randomRowNumber = Math.floor(Math.random() * (board.length-1) )
     let divID = "c" + randomColumnNumber + "r" + randomRowNumber
-    console.log("randomColumnNumber = " + randomColumnNumber)
-    console.log("randomRowNumber = " + randomRowNumber)
-    console.log(Object.keys(minePositions))
-    console.log("divID = " + divID)
-    console.log(minePositions.hasOwnProperty(divID))
-    console.log(Object.keys(minePositions).length)
-    // if (divID in minePositions) { // this line ensures that ALL of the random columns or rows would NOT repeat
-    if (minePositions.hasOwnProperty(divID)) {
-      console.log(minePositions[divID])
-    } else {
+
+    if ( !minePositions.hasOwnProperty(divID) ) {
+      // this if statement ensures that ALL of the random columns or rows would NOT repeat
       minePositions[divID] = {columnAndRow: divID}
-      console.log(minePositions)
-      console.log("Object.keys(minePositions).length = " + Object.keys(minePositions).length)
 
       board[randomColumnNumber][randomRowNumber].setPossibility = 'mine'
-      console.log(board[randomColumnNumber][randomRowNumber].getPossibility)
     }
   }
 
-  console.log(minePositions)
   return minePositions
 }
 
@@ -133,6 +122,7 @@ let listOfClueNumbers = [[],[],[],[],[],[],[],[],[]]
 
 function putNumbersAroundMines(hashOfMinePositions) {
   /*
+  !!!!!!!!!!!!!!PSEUDOCODE!!!!!!!!!!!!!!
     1. loop through each key in the hash to find mine positions
     2. get the array location of tiles around mine positions
       2.1. parse 'columnAndRow'
@@ -165,15 +155,12 @@ function putNumbersAroundMines(hashOfMinePositions) {
           2.5.c.2. if possibility is 'mine', do nothing.
           2.5.c.3. if possibility is 'clear' or 'number', get the divID and put a number (+1) in "possibility" property
   */
-  console.log('in putNumbersAroundMines(hashOfMinePositions)')
+
   for (let eachKey in minePositions) {
     let columnOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(1,2))
     let rowOfThisTile = parseInt(minePositions[eachKey].columnAndRow.slice(-1))
     let mineStopValue = board[columnOfThisTile][rowOfThisTile].getPossibility
-    console.log("column = " + columnOfThisTile)
-    console.log("row = " + rowOfThisTile)
-    console.log(minePositions[eachKey].columnAndRow)
-    console.log(board[columnOfThisTile][rowOfThisTile].getPossibility)
+
 
     let north = checkTileAbove(columnOfThisTile, rowOfThisTile)
     let northEast = checkNorthEastTile(columnOfThisTile, rowOfThisTile)
@@ -187,64 +174,13 @@ function putNumbersAroundMines(hashOfMinePositions) {
     let adjacentTiles = [north, northEast, east, southEast, south, southWest, west, northWest]
 
     for (let i=0; i < adjacentTiles.length; i++) {
-      console.log("i = " + i)
       if ( Array.isArray(adjacentTiles[i]) ) {
-        console.log('Array.isArray(adjacentTiles[' + i + '] is: ' + Array.isArray(adjacentTiles[i]) )
         if (board[adjacentTiles[i][0]][adjacentTiles[i][1]].getPossibility != 'mine') {
-          console.log('inside 2nd if')
-          console.log('board[adjacentTiles[i][0]][adjacentTiles[i][1]].getPossibility = ' + board[adjacentTiles[i][0]][adjacentTiles[i][1]].getPossibility)
+
           surroundMinesWithClueNumbers(adjacentTiles[i])
         }
       }
     }
-
-    // if ( Array.isArray(north) ) {
-    //   if (board[north[0]][north[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(north)
-    //   }
-    // }
-
-    // if (Array.isArray(northEast) ) {
-    //   if (board[northEast[0]][northEast[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(northEast)
-    //   }
-    // }
-
-    // if ( Array.isArray(east) ) {
-    //   if (board[east[0]][east[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(east)
-    //   }
-    // }
-    
-    // if ( Array.isArray(southEast) ) {
-    //   if (board[southEast[0]][southEast[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(southEast)
-    //   }
-    // }
-
-    // if ( Array.isArray(south) ) {
-    //   if (board[south[0]][sout[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(south)
-    //   }
-    // }
-    
-    // if ( Array.isArray(southWest) ) {
-    //   if (board[southWest[0]][southWest[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(southWest)
-    //   }
-    // }
-
-    // if ( Array.isArray(west) ) {
-    //   if (board[west[0]][west[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(west)
-    //   }
-    // }
-    
-    // if ( Array.isArray(northWest) ) {
-    //   if (board[northWest[0]][northWest[1]].getPossibility != 'mine') {
-    //     surroundMinesWithClueNumbers(northWest)
-    //   }
-    // }
     
   }
 }
@@ -253,27 +189,19 @@ function surroundMinesWithClueNumbers(columnAndRowArray) {
   let column = columnAndRowArray[0]
   let row = columnAndRowArray[1]
   let divID = "c" + columnAndRowArray[0] + "r" + columnAndRowArray[1]
-
-  console.log("before = " + board[column][row].getPossibility)
-  console.log("typeof = " + (typeof board[column][row].getPossibility))
   let tileValue = board[column][row].getPossibility
   
-  console.log("after = " + board[column][row].getPossibility)
-
-  if (clueNumbers.hasOwnProperty(divID)) {
-    console.log(clueNumbers)
-  } else {
+  if ( !clueNumbers.hasOwnProperty(divID)) {
+    // this if statement ensures that ALL of the columns or rows would NOT repeat
     clueNumbers[divID] = {
       c: column,
       r: row,
     }
-    console.log(clueNumbers)
 
     listOfClueNumbers[column][row] = 'clue number'
-    console.log("Object.keys(listOfClueNumbers).length = " + Object.keys(listOfClueNumbers).length)
   }
+
   board[column][row].setPossibility = tileValue + 1
-  console.log(board[column][row].getPossibility)
 }
 
 

@@ -37,7 +37,6 @@
   border-top: 3px solid #38678B;
   border-right: 3px solid #24435B;
   border-bottom: 3px solid #24435B;
-
 }
 
 .undiscovered:active {
@@ -61,16 +60,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-/*
-  filter:alpha(opacity=50);
-  -moz-opacity:0.5;
-  -khtml-opacity: 0.5;
-  opacity: 0.5;*/
   background-color: rgba(0,0,0,0.5);
   z-index: 10000;
 }
-
-
 
 .overlay-words {
   font-size: 7em;
@@ -82,17 +74,8 @@
   margin: auto;
 }
 
-
 .row-div:hover {
   border: 1px solid orange;
-}
-
-.token {
-  width: 3em;
-  height: auto;
-  border-radius: 100%;
-  display: block;
-  margin: auto;
 }
 
 .game-over {
@@ -112,14 +95,6 @@
 .large-green-number {
   color: green;
   font-size: 4em;
-}
-
-.translucent-image {
-  background: url("../imgs/game-over-p197175_p_v8_ah.jpg");
-  filter:alpha(opacity=50);
-  -moz-opacity:0.5;
-  -khtml-opacity: 0.5;
-  opacity: 0.5;
 }
 
 .splash-image {
