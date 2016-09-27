@@ -11,7 +11,10 @@
     //     alert("$(e.target).attr('id') = " + $(e.target).attr('id'));
     //   }
     // })
-    instead of "$(this).on('click', function(e){...}"
+    instead of "$(this).on('click', function(e){...}", also this will
+    get rid of this error msg: 
+    "game-logic.js:25 Uncaught TypeError: Cannot read property 'NaN' of undefined"
+    which happens when anything aside from the tiles are clicked.
   3. modes = easy, medium, difficult
     easy = 9x9 board; 10 mines
     medium = 16x16 board; 40 mines
