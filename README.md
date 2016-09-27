@@ -1,7 +1,7 @@
 # The Hurt Locker Sweeper
 #### Explosive Ordinance Disposal
 
-[put link to heroku here](http://your.heroku.site)
+[Play The Game!!](https://explosive-ordinance-disposal.herokuapp.com/)
 
 ## About
 
